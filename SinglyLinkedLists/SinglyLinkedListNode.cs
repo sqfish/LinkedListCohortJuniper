@@ -16,15 +16,14 @@ namespace SinglyLinkedLists
         public SinglyLinkedListNode Next
         {
             get { return next; }
-            set {
-                    if (this == value)
-                    {
-                        throw new ArgumentException();
-                    } else
-                    {
-                        next = value;
-                    }
+            set
+            {
+                if (this == value)
+                {
+                    throw new ArgumentException();
                 }
+                next = value;
+            }
         }
 
         private string value;
@@ -54,7 +53,7 @@ namespace SinglyLinkedLists
 
         public override string ToString()
         {
-            return this.value;
+            return value.ToString();
         }
 
         // READ: http://msdn.microsoft.com/en-us/library/system.icomparable.compareto.aspx

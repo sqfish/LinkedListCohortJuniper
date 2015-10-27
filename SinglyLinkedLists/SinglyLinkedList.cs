@@ -37,7 +37,7 @@ namespace SinglyLinkedLists
 
         public void AddLast(string value)
         {
-            throw new NotImplementedException();
+
         }
 
         // NOTE: There is more than one way to accomplish this.  One is O(n).  The other is O(1).
