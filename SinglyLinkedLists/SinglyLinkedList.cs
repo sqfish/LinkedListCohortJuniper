@@ -28,12 +28,41 @@ namespace SinglyLinkedLists
 
         public void AddAfter(string existingValue, string value)
         {
-            throw new NotImplementedException();
+            SinglyLinkedListNode current = firstNode;
+            bool test = false;
+            while (current != null)
+            {
+                test = (current.Value == existingValue);
+                if (test)
+                { break; }
+                current = current.Next;
+            }
+
+            if (!test)
+            { throw new ArgumentException(); }
+            if (test)
+            {
+                SinglyLinkedListNode nextNode = current.Next;
+                SinglyLinkedListNode newNode = new SinglyLinkedListNode(value);
+                current.Next = newNode;
+                newNode.Next = nextNode;
+            }
         }
 
         public void AddFirst(string value)
         {
-            throw new NotImplementedException();
+            SinglyLinkedListNode currentNode = firstNode;
+            firstNode = new SinglyLinkedListNode(value);
+            firstNode.Next = currentNode;
+           // PRIOR TO REFACTORING:
+           // SinglyLinkedList input = (SinglyLinkedList)this.MemberwiseClone();
+           // this.firstNode = new SinglyLinkedListNode(value);
+           // SinglyLinkedListNode currentNode = input.firstNode;
+           // while (currentNode != null)
+           // {
+           //     this.AddLast(currentNode.ToString());
+           //     currentNode = currentNode.Next;
+           // }
         }
 
         public void AddLast(string value)
