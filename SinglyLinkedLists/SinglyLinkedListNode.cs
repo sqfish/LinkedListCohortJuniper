@@ -66,7 +66,7 @@ namespace SinglyLinkedLists
             }
             else
             {
-                return this.value.CompareTo(nextNode.value);
+                return value.CompareTo(nextNode.value);
             }
         }
 
@@ -75,6 +75,10 @@ namespace SinglyLinkedLists
             return this.CompareTo(obj) == 0;
         }
 
+        public override int GetHashCode()
+        {
+            return this.value.GetHashCode();
+        }
         public bool AreNotEqual(Object obj1, Object obj2)
         {
             return false;
@@ -82,14 +86,7 @@ namespace SinglyLinkedLists
 
         public bool IsLast()
         {
-            if (this.Next == null)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return (Next == null);
         }
     }
 }

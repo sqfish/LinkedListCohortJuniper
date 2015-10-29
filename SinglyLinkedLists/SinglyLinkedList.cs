@@ -71,9 +71,6 @@ namespace SinglyLinkedLists
                 { throw new ArgumentOutOfRangeException(); }
                 currentNode = currentNode.Next;
             }
-            //if (currentNode.Value == null)
-            //{ throw new ArgumentOutOfRangeException(); }
-            //else { return currentNode.Value; }
             return currentNode.Value;
         }
 
@@ -100,7 +97,14 @@ namespace SinglyLinkedLists
         // HINT 3: If you highlight code and right click, you can use the refactor menu to extract a method for you...
         public string Last()
         {
-            throw new NotImplementedException();
+            if (this.firstNode == null)
+            { return null; }
+            SinglyLinkedListNode currentNode = firstNode;
+            while (!currentNode.IsLast())
+            {
+                currentNode = currentNode.Next;
+            }
+            return currentNode.ToString();
         }
 
         public void Remove(string value)
@@ -115,7 +119,37 @@ namespace SinglyLinkedLists
 
         public string[] ToArray()
         {
-            throw new NotImplementedException();
+            if (this.firstNode == null)
+            { return new string[] { }; }
+            
+            char[] charToTrim = new char[] { '{', ' ', '}', '"' };
+            string[] charToSplit = new string[] { "\", \"" };
+            var input = this.ToString().Trim(charToTrim);
+            string[] output = input.Split(charToSplit, StringSplitOptions.RemoveEmptyEntries);
+            return output;
+            
+        }
+
+        public override string ToString()
+        {
+            SinglyLinkedListNode currentNode = this.firstNode;
+            string output = "{ ";
+
+            if (currentNode != null)
+            {
+                while (!currentNode.IsLast())
+                {
+                    output += "\"" + currentNode.Value + "\", ";
+                    currentNode = currentNode.Next;
+                }
+
+                if (currentNode.IsLast())
+                {
+                    output += "\"" + currentNode.Value + "\" ";
+                    currentNode = currentNode.Next;
+                }
+            }
+            return output + "}";
         }
     }
 }

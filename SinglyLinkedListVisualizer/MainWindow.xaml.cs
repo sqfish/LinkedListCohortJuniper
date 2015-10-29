@@ -56,7 +56,7 @@ namespace SinglyLinkedListVisualizer
             MethodInfo desiredMethod = linkedList.GetType().GetMethod((string)MethodList.SelectedValue);
             string arg1 = Argument1.Text;
             string arg2 = Argument2.Text;
-            Argument1.Text = "";
+            Argument1.Text = ""; 
             Argument2.Text = "";
             if (desiredMethod.GetParameters().Length == 1)
             {
