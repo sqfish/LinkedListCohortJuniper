@@ -77,6 +77,7 @@ namespace SinglyLinkedLists
         {
             return this.value.GetHashCode();
         }
+
         public bool AreNotEqual(Object obj1, Object obj2)
         {
             return false;

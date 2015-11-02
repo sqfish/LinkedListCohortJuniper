@@ -33,6 +33,7 @@ namespace SinglyLinkedLists
         public int this[string query]
         {
             get { return this.IndexOf(query); }
+            set { }
         }
 
         public void AddAfter(string existingValue, string value)
@@ -85,7 +86,18 @@ namespace SinglyLinkedLists
         // NOTE: There is more than one way to accomplish this.  One is O(n).  The other is O(1).
         public int Count()
         {
-            return this.ToArray().Length;
+            if (this.firstNode == null)
+            {
+                return 0;
+            }
+            SinglyLinkedListNode currentNode = this.firstNode;
+            int count = 1;
+            while(!currentNode.IsLast())
+            {
+                currentNode = currentNode.Next;
+                count++;
+            }
+            return count;
         }
 
         public string ElementAt(int index)
@@ -97,6 +109,9 @@ namespace SinglyLinkedLists
         {
             if (firstNode == null)
             { throw new ArgumentOutOfRangeException(); }
+
+            if (index < 0)
+            { index = this.Count() + index; }
 
             SinglyLinkedListNode currentNode = firstNode;
             for (int i = 0; i < index; i++)
@@ -130,7 +145,16 @@ namespace SinglyLinkedLists
 
         public bool IsSorted()
         {
-            throw new NotImplementedException();
+            int count = this.Count();
+            if (count > 1)
+            {
+                for (var i = 0; i < count-1; i++ )
+                {
+                    if (NodeAt(i) > NodeAt(i+1))
+                    { return false; }
+                }
+            }
+            return true;
         }
 
         // HINT 1: You can extract this functionality (finding the last item in the list) from a method you've already written!
@@ -140,22 +164,18 @@ namespace SinglyLinkedLists
         {
             if (this.firstNode == null)
             { return null; }
-            SinglyLinkedListNode currentNode = firstNode;
-            while (!currentNode.IsLast())
-            {
-                currentNode = currentNode.Next;
-            }
-            return currentNode.ToString();
+            return this.ElementAt(-1);
         }
 
         public void Remove(string value)
         {
             int currentIndex = this[value];
+            int count = this.Count();
             if (currentIndex == -1)
             { return; }
             if (currentIndex == 0)
             { this.firstNode = this.firstNode.Next; }
-            else if (currentIndex + 1 == this.Count())
+            else if (currentIndex +1 == this.Count())
             {
                 SinglyLinkedListNode previousNode = NodeAt(currentIndex - 1);
                 previousNode.Next = null;
@@ -170,7 +190,31 @@ namespace SinglyLinkedLists
 
         public void Sort()
         {
-            throw new NotImplementedException();
+            int count = this.Count();
+            if (count < 2)
+            { return; }
+            if (this.IsSorted())
+            { return; }
+            SinglyLinkedListNode currentNode = this.firstNode;
+            while (this.IsSorted() == false)
+            {
+                for (int i = 0; i < count-1; i++)
+                {
+                    Console.WriteLine("Iteration i: {0}", i);
+                    if(NodeAt(i) > NodeAt(i+1))
+                    {
+                        Console.WriteLine("Node {0} > Node {1}", NodeAt(i), NodeAt(i + 1));
+                        string currentValue = NodeAt(i).ToString();
+                        NodeAt(i).Value = NodeAt(i + 1).Value;
+                        NodeAt(i + 1).Value = currentValue;
+                    }
+                }
+                //1. compare node0, node1
+                    // a. node0 < node1, continue
+                    // b. node0 > node1, swap values
+
+
+            }
         }
 
         public string[] ToArray()
