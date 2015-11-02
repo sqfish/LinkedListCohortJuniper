@@ -16,14 +16,21 @@ namespace SinglyLinkedLists
         // READ: http://msdn.microsoft.com/en-us/library/aa691335(v=vs.71).aspx
         public SinglyLinkedList(params object[] values)
         {
-            throw new NotImplementedException();
+            for (var i = 0; i < values.Length; i++)
+            {
+                string value = new string(values[i].ToString().ToCharArray());
+                this.AddLast(value.ToString());
+            }
         }
 
         // READ: http://msdn.microsoft.com/en-us/library/6x16t2tx.aspx
         public string this[int i]
         {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
+            get { return this.ElementAt(i); }
+            set
+            {
+                this.NodeAt(i).Value = value;
+            }
         }
 
         public void AddAfter(string existingValue, string value)
@@ -54,20 +61,11 @@ namespace SinglyLinkedLists
             SinglyLinkedListNode currentNode = firstNode;
             firstNode = new SinglyLinkedListNode(value);
             firstNode.Next = currentNode;
-           // PRIOR TO REFACTORING:
-           // SinglyLinkedList input = (SinglyLinkedList)this.MemberwiseClone();
-           // this.firstNode = new SinglyLinkedListNode(value);
-           // SinglyLinkedListNode currentNode = input.firstNode;
-           // while (currentNode != null)
-           // {
-           //     this.AddLast(currentNode.ToString());
-           //     currentNode = currentNode.Next;
-           // }
         }
 
         public void AddLast(string value)
         {
-            if(this.First() == null)
+            if (this.First() == null)
             {
                 firstNode = new SinglyLinkedListNode(value);
             }
@@ -78,7 +76,7 @@ namespace SinglyLinkedLists
                 {
                     nextNode = nextNode.Next;
                 }
-                nextNode.Next = new SinglyLinkedListNode(value);    
+                nextNode.Next = new SinglyLinkedListNode(value);
             }
         }
 
@@ -100,7 +98,22 @@ namespace SinglyLinkedLists
                 { throw new ArgumentOutOfRangeException(); }
                 currentNode = currentNode.Next;
             }
-            return currentNode.Value;
+            return currentNode.ToString();
+        }
+
+        public SinglyLinkedListNode NodeAt(int index)
+        {
+            if (firstNode == null)
+            { throw new ArgumentOutOfRangeException(); }
+
+            SinglyLinkedListNode currentNode = firstNode;
+            for (int i = 0; i < index; i++)
+            {
+                if (currentNode.IsLast())
+                { throw new ArgumentOutOfRangeException(); }
+                currentNode = currentNode.Next;
+            }
+            return currentNode;
         }
 
         public string First()
@@ -150,13 +163,12 @@ namespace SinglyLinkedLists
         {
             if (this.firstNode == null)
             { return new string[] { }; }
-            
+
             char[] charToTrim = new char[] { '{', ' ', '}', '"' };
             string[] charToSplit = new string[] { "\", \"" };
             var input = this.ToString().Trim(charToTrim);
             string[] output = input.Split(charToSplit, StringSplitOptions.RemoveEmptyEntries);
             return output;
-            
         }
 
         public override string ToString()

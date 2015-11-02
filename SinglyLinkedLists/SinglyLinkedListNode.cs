@@ -30,6 +30,7 @@ namespace SinglyLinkedLists
         public string Value 
         {
             get { return value; }
+            set { this.value = value; }
         }
 
         public static bool operator <(SinglyLinkedListNode node1, SinglyLinkedListNode node2)
@@ -64,10 +65,7 @@ namespace SinglyLinkedLists
             {
                 return 1;
             }
-            else
-            {
-                return value.CompareTo(nextNode.value);
-            }
+            return value.CompareTo(nextNode.value);
         }
 
         public override bool Equals(Object obj)
