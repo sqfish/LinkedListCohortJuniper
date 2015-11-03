@@ -8,18 +8,17 @@ namespace SinglyLinkedLists
     public class SinglyLinkedList
     {
         private SinglyLinkedListNode firstNode;
-        public SinglyLinkedList()
-        {
+        //public SinglyLinkedList()
+        //{
             // NOTE: This constructor isn't necessary, once you've implemented the constructor below.
-        }
+        //}
 
         // READ: http://msdn.microsoft.com/en-us/library/aa691335(v=vs.71).aspx
         public SinglyLinkedList(params object[] values)
         {
             for (var i = 0; i < values.Length; i++)
             {
-                string value = new string(values[i].ToString().ToCharArray());
-                this.AddLast(value.ToString());
+                this.AddLast(values[i].ToString());
             }
         }
 
@@ -33,28 +32,27 @@ namespace SinglyLinkedLists
         public int this[string query]
         {
             get { return this.IndexOf(query); }
-            set { }
         }
 
         public void AddAfter(string existingValue, string value)
         {
-            SinglyLinkedListNode current = firstNode;
+            SinglyLinkedListNode currentNode = firstNode;
             bool test = false;
-            while (current != null)
+            while (currentNode != null)
             {
-                test = (current.Value == existingValue);
+                test = (currentNode.Value == existingValue);
                 if (test)
                 { break; }
-                current = current.Next;
+                currentNode = currentNode.Next;
             }
 
             if (!test)
             { throw new ArgumentException(); }
             if (test)
             {
-                SinglyLinkedListNode nextNode = current.Next;
+                SinglyLinkedListNode nextNode = currentNode.Next;
                 SinglyLinkedListNode newNode = new SinglyLinkedListNode(value);
-                current.Next = newNode;
+                currentNode.Next = newNode;
                 newNode.Next = nextNode;
             }
         }
@@ -193,28 +191,20 @@ namespace SinglyLinkedLists
             int count = this.Count();
             if (count < 2)
             { return; }
-            if (this.IsSorted())
-            { return; }
             SinglyLinkedListNode currentNode = this.firstNode;
             while (this.IsSorted() == false)
             {
                 for (int i = 0; i < count-1; i++)
                 {
-                    Console.WriteLine("Iteration i: {0}", i);
                     if(NodeAt(i) > NodeAt(i+1))
                     {
-                        Console.WriteLine("Node {0} > Node {1}", NodeAt(i), NodeAt(i + 1));
                         string currentValue = NodeAt(i).ToString();
                         NodeAt(i).Value = NodeAt(i + 1).Value;
                         NodeAt(i + 1).Value = currentValue;
                     }
                 }
-                //1. compare node0, node1
-                    // a. node0 < node1, continue
-                    // b. node0 > node1, swap values
-
-
             }
+            return;
         }
 
         public string[] ToArray()
