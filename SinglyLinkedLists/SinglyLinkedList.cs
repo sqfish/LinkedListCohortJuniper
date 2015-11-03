@@ -37,24 +37,22 @@ namespace SinglyLinkedLists
         public void AddAfter(string existingValue, string value)
         {
             SinglyLinkedListNode currentNode = firstNode;
-            bool test = false;
+            bool found = false;
             while (currentNode != null)
             {
-                test = (currentNode.Value == existingValue);
-                if (test)
-                { break; }
+                if (currentNode.Value == existingValue)
+                {
+                    found = true;
+                    SinglyLinkedListNode nextNode = currentNode.Next;
+                    SinglyLinkedListNode newNode = new SinglyLinkedListNode(value);
+                    currentNode.Next = newNode;
+                    newNode.Next = nextNode;
+                    return;
+                }
                 currentNode = currentNode.Next;
             }
-
-            if (!test)
+            if (!found)
             { throw new ArgumentException(); }
-            if (test)
-            {
-                SinglyLinkedListNode nextNode = currentNode.Next;
-                SinglyLinkedListNode newNode = new SinglyLinkedListNode(value);
-                currentNode.Next = newNode;
-                newNode.Next = nextNode;
-            }
         }
 
         public void AddFirst(string value)
@@ -209,13 +207,12 @@ namespace SinglyLinkedLists
 
         public string[] ToArray()
         {
-            if (this.firstNode == null)
-            { return new string[] { }; }
-
-            char[] charToTrim = new char[] { '{', ' ', '}', '"' };
-            string[] charToSplit = new string[] { "\", \"" };
-            var input = this.ToString().Trim(charToTrim);
-            string[] output = input.Split(charToSplit, StringSplitOptions.RemoveEmptyEntries);
+            int count = this.Count();
+            string[] output = new string[count];
+            for (int i = 0; i < count; i++)
+            {
+                output[i] = ElementAt(i);
+            }
             return output;
         }
 
