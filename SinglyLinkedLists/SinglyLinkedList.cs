@@ -191,20 +191,41 @@ namespace SinglyLinkedLists
             int count = this.Count();
             if (count < 2)
             { return; }
-            SinglyLinkedListNode currentNode = this.firstNode;
-            while (this.IsSorted() == false)
+            SinglyLinkedListNode previous = null;
+            SinglyLinkedListNode current = this.firstNode;
+            SinglyLinkedListNode next = firstNode.Next;
+            bool swapOccurred = false;
+            while (next != null)
             {
-                for (int i = 0; i < count - 1; i++)
+                if (current > next)
                 {
-                    if (NodeAt(i) > NodeAt(i + 1))
-                    {
-                        string currentValue = NodeAt(i).ToString();
-                        NodeAt(i).Value = NodeAt(i + 1).Value;
-                        NodeAt(i + 1).Value = currentValue;
-                    }
+                    SwapWithNext(previous, current);
+                    swapOccurred = true;
                 }
+                previous = current;
+                current = next;
+                next = current.Next;
+
             }
-            return;
+            if (swapOccurred)
+            {
+                BubbleSort();
+            }
+        }
+
+        private void SwapWithNext(SinglyLinkedListNode previous, SinglyLinkedListNode swapee)
+        {
+            SinglyLinkedListNode swapWith = swapee.Next;
+            if (previous == null)
+            {
+                firstNode = swapWith;
+            }
+            else
+            {
+                previous.Next = swapWith;
+            }
+            swapee.Next = swapWith.Next;
+            swapWith.Next = swapee;
         }
 
         private void BaseSort(SinglyLinkedList input)
@@ -235,10 +256,34 @@ namespace SinglyLinkedLists
             Console.WriteLine("listOne: {0}", listOne);
             Console.WriteLine("listTwo: {0}", listTwo);
         }
+
+        public void UnnamedSort()
+        {
+            int count = this.Count();
+            if (count < 2)
+            { return; }
+            SinglyLinkedList sorted = new SinglyLinkedList();
+            for (int i = 0; i < count; i++)
+            {
+                SinglyLinkedListNode least = this.firstNode;
+                SinglyLinkedListNode currentNode = firstNode.Next;
+                while (currentNode != null)
+                {
+                    if (least > currentNode)
+                    {
+                        least = currentNode;
+                    }
+                    currentNode = currentNode.Next;
+                }
+                sorted.AddLast(least.Value);
+                this.Remove(least.Value);
+            }
+            this.firstNode = sorted.firstNode;
+        }
         
         public void Sort()
         {
-            this.BubbleSort();
+            this.UnnamedSort();
         }
 
         public string[] ToArray()

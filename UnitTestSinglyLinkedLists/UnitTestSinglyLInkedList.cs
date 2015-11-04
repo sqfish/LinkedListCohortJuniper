@@ -417,9 +417,23 @@ namespace UnitTestSinglyLinkedLists
         }
 
         [TestMethod]
+        public void IsSortedOnLargerUnsortedList()
+        {
+            SinglyLinkedList list = new SinglyLinkedList("bar", "grille", "foo", "apple");
+            Assert.IsFalse(list.IsSorted());
+        }
+
+        [TestMethod]
         public void IsSortedOnSortedList()
         {
             SinglyLinkedList list = new SinglyLinkedList("bar", "foo");
+            Assert.IsTrue(list.IsSorted());
+        }
+
+        [TestMethod]
+        public void IsSortedOnLargerSortedList()
+        {
+            SinglyLinkedList list = new SinglyLinkedList("apple", "bar", "foo", "grille");
             Assert.IsTrue(list.IsSorted());
         }
 
@@ -475,6 +489,44 @@ namespace UnitTestSinglyLinkedLists
             SinglyLinkedList list = new SinglyLinkedList("foo", "bar", "grille", "bar");
             list.Sort();
             var expected = new string[] { "bar", "bar", "foo", "grille" };
+            CollectionAssert.AreEqual(expected, list.ToArray());
+        }
+
+        [TestMethod]
+        public void SwapWithNextItem0()
+        {
+            SinglyLinkedList list = new SinglyLinkedList("foo", "bar", "grille", "zoo", "cat");
+            PrivateObject listObj = new PrivateObject(list);
+            SinglyLinkedListNode nodeZero = (SinglyLinkedListNode) listObj.Invoke("NodeAt", new object[] { 0 });
+            listObj.Invoke("SwapWithNext", null, nodeZero);
+
+            var expected = new string[] { "bar", "foo", "grille", "zoo", "cat" };
+            CollectionAssert.AreEqual(expected, list.ToArray());
+        }
+
+        [TestMethod]
+        public void SwapWithNextItem1()
+        {
+            SinglyLinkedList list = new SinglyLinkedList("foo", "bar", "grille", "zoo", "cat");
+            PrivateObject listObj = new PrivateObject(list);
+            SinglyLinkedListNode nodeZero = (SinglyLinkedListNode)listObj.Invoke("NodeAt", new object[] { 0 });
+            SinglyLinkedListNode nodeOne = (SinglyLinkedListNode)listObj.Invoke("NodeAt", 1);
+            listObj.Invoke("SwapWithNext", nodeZero, nodeOne);
+
+            var expected = new string[] { "foo", "grille", "bar", "zoo", "cat" };
+            CollectionAssert.AreEqual(expected, list.ToArray());
+        }
+
+        [TestMethod]
+        public void SwapWithNextItemN()
+        {
+            SinglyLinkedList list = new SinglyLinkedList("foo", "bar", "grille", "zoo", "cat");
+            PrivateObject listObj = new PrivateObject(list);
+            SinglyLinkedListNode nodeTwo = (SinglyLinkedListNode)listObj.Invoke("NodeAt", 2);
+            SinglyLinkedListNode nodeThree = (SinglyLinkedListNode)listObj.Invoke("NodeAt", 3);
+            listObj.Invoke("SwapWithNext", nodeTwo, nodeThree);
+
+            var expected = new string[] { "foo", "bar", "grille", "cat", "zoo" };
             CollectionAssert.AreEqual(expected, list.ToArray());
         }
     }
