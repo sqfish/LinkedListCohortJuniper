@@ -25,7 +25,9 @@ namespace SinglyLinkedLists
         // READ: http://msdn.microsoft.com/en-us/library/6x16t2tx.aspx
         public string this[int i]
         {
-            get { return this.ElementAt(i); }
+            get { return ElementAt(i); }
+            // Only makes sense because Node is a trivial object
+            // Replace the Node entirely for more complicated data
             set { this.NodeAt(i).Value = value; }
         }
 
@@ -101,7 +103,7 @@ namespace SinglyLinkedLists
             return NodeAt(index).ToString();
         }
 
-        public SinglyLinkedListNode NodeAt(int index)
+        private SinglyLinkedListNode NodeAt(int index)
         {
             if (firstNode == null)
             { throw new ArgumentOutOfRangeException(); }
@@ -132,7 +134,7 @@ namespace SinglyLinkedLists
             SinglyLinkedListNode currentNode = this.firstNode;
             for (var i = 0; i < this.Count(); i++ )
             {
-                if (value.CompareTo(currentNode.ToString()) == 0)
+                if (value.Equals(currentNode.Value))
                 { return i; }
                 currentNode = currentNode.Next;
             }
@@ -171,7 +173,7 @@ namespace SinglyLinkedLists
             { return; }
             if (currentIndex == 0)
             { this.firstNode = this.firstNode.Next; }
-            else if (currentIndex +1 == this.Count())
+            else if (currentIndex + 1 == count)
             {
                 SinglyLinkedListNode previousNode = NodeAt(currentIndex - 1);
                 previousNode.Next = null;
@@ -184,7 +186,7 @@ namespace SinglyLinkedLists
             }
         }
 
-        public void Sort()
+        public void BubbleSort()
         {
             int count = this.Count();
             if (count < 2)
@@ -192,9 +194,9 @@ namespace SinglyLinkedLists
             SinglyLinkedListNode currentNode = this.firstNode;
             while (this.IsSorted() == false)
             {
-                for (int i = 0; i < count-1; i++)
+                for (int i = 0; i < count - 1; i++)
                 {
-                    if(NodeAt(i) > NodeAt(i+1))
+                    if (NodeAt(i) > NodeAt(i + 1))
                     {
                         string currentValue = NodeAt(i).ToString();
                         NodeAt(i).Value = NodeAt(i + 1).Value;
@@ -203,6 +205,40 @@ namespace SinglyLinkedLists
                 }
             }
             return;
+        }
+
+        private void BaseSort(SinglyLinkedList input)
+        {
+            if (NodeAt(0) > NodeAt(1))
+            {
+                string currentValue = NodeAt(0).ToString();
+                NodeAt(0).Value = NodeAt(1).Value;
+                NodeAt(1).Value = currentValue;
+            }
+        }
+
+        public void MergeSort(SinglyLinkedList input)
+        {
+            // Incomplete
+            int count = this.Count();
+            Console.WriteLine("Original List: {0}", this);
+            SinglyLinkedList listOne = new SinglyLinkedList();
+            SinglyLinkedList listTwo = new SinglyLinkedList();
+            decimal split = count / 2;
+            for (int i = 0; i < split; i++)
+            {
+                Console.WriteLine("Iteration {0}", i);
+                Console.WriteLine("Split {0}", split);
+                listOne.AddLast(this[i]);
+                listTwo.AddLast(this[i + (int)split]);
+            }
+            Console.WriteLine("listOne: {0}", listOne);
+            Console.WriteLine("listTwo: {0}", listTwo);
+        }
+        
+        public void Sort()
+        {
+            this.BubbleSort();
         }
 
         public string[] ToArray()
